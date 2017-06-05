@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<title>Promise Chaining</title>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			angular.module("myApp").service("demoService",demoService);
+
+			myCtrl.$inject = ["$scope","demoService","$q"]
+			demoService.$inject = ["$q","$timeout"]
+
+			function myCtrl($scope,demoService,$q){
+				var vm = this;
+				vm.init = init;
+				vm.list = [];
+
+				vm.message = "Promise Chaining Practise";
+
+				function init(){
+					//chainingOne();
+					chainingTwo();
+				}
+
+
+				function chainingOne(){
+					demoService.getTwoTimesOf(1000,4).then(function(n){
+						vm.list.push(n);
+						return demoService.getTwoTimesOf(500,5);
+					}).then(function(n){
+						vm.list.push(n);
+						return demoService.getTwoTimesOf(1500,25);	
+					}).then(function(n){
+						vm.list.push(n);
+						return demoService.getTwoTimesOf(3000,15);	
+					}).then(function(n){
+						vm.list.push(n);
+						console.log("Last Promise Resolved ",vm.list);
+					});
+				}
+
+				function chainingTwo(){
+					var promiseArray = [demoService.getTwoTimesOf(1000,4),
+										demoService.getTwoTimesOf(500,5),
+										demoService.getTwoTimesOf(30000,25),
+										demoService.getTwoTimesOf(1000,15)];
+				
+					promiseArray[0].then(function(n){
+						vm.list.push(n);
+						return promiseArray[1];
+					}).then(function(n){
+						vm.list.push(n);
+						return promiseArray[2];	
+					}).then(function(n){
+						vm.list.push(n);
+						return promiseArray[3];	
+					}).then(function(n){
+						vm.list.push(n);
+						console.log("Last Promise Resolved ",vm.list);
+					});
+				}
+
+			}
+
+
+
+			function demoService($q,$timeout){
+				
+				this.getTwoTimesOf = function(DELAY,num){
+					
+					var deferred = $q.defer();
+
+					$timeout(function(){
+						var n = (2 * num);						
+						deferred.resolve(n);
+					},DELAY);
+
+					return deferred.promise;
+				}
+				
+			}	
+		</script>
+	</head>
+	<body ng-controller="myCtrl as vm" ng-cloak="" ng-init="vm.init()">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{vm.message}}</h3>	
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<ul>
+					<li ng-repeat="num in vm.list track by $index">
+						<h3><span class="label label-primary">{{num}}</span></h3>
+					</li>
+				</ul>
+			</div>
+		</div>	
+	</body>
+</html>

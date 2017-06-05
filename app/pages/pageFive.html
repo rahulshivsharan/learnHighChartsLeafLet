@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").constant("TILE_SIZE",16);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			myCtrl.$inject = ["$scope","TILE_SIZE","$q","$timeout"]
+
+			function myCtrl($scope,TILE_SIZE,$q,$timeout){
+				var vm = this;
+				vm.imageName = "";
+
+				
+
+				angular.element("#uploadImageFnFile").on("change",uploadImageFn);
+
+				function drawTile(x,y,parentImage){
+					//console.log("x "+x+", y "+y);
+					var deferred = $q.defer(),
+						image = undefined,
+						imageElement = undefined;
+
+					image = new Image();
+					image.src = parentImage.src;
+					imageElement = angular.element(image)												  
+												  .addClass("imageChild")
+												  .css("height",TILE_SIZE+"px")
+												  .css("width",TILE_SIZE+"px")
+												  .css("top",y+"px")
+												  .css("left",x+"px");
+							
+					angular.element("#imageHolder").append(imageElement);			
+					
+					
+					deferred.resolve(imageElement);									
+
+					return deferred.promise;
+				}
+
+				function processImageDisplay(parentImageElement){
+					var image = undefined,
+						imageElement = undefined;
+				
+					//var parentImageElement = angular.element("img.imageParent");
+					
+					//console.log(parentImageElement);
+
+					var yTotal = parentImageElement.height/TILE_SIZE;
+					var xTotal = parentImageElement.width/TILE_SIZE;
+
+					//console.log("X-Total, "+xTotal+
+					//			" y-Total, "+yTotal);
+
+					var xPoint = 0, yPoint = 0;
+
+					for(var y = 0; y < yTotal; y++){
+						for(var x = 0;x < xTotal;x++){
+							//console.log("x "+xPoint+", y "+yPoint);
+							/*
+							image = new Image();
+							image.src = parentImageElement.src;
+							imageElement = angular.element(image)												  
+												  .addClass("imageChild")
+												  .css("height",TILE_SIZE+"px")
+												  .css("width",TILE_SIZE+"px")
+												  .css("top",yPoint+"px")
+												  .css("left",xPoint+"px");
+							
+							angular.element("#imageHolder").append(imageElement);
+							*/
+							
+							drawTile(xPoint,yPoint,parentImageElement).then(function(imgObj){
+								$timeout(function(){
+									console.log("RESOLVED");
+								},250);								
+								//angular.element("#imageHolder").append(imgObj);														
+							});
+
+							xPoint += TILE_SIZE;								
+						}
+						
+						yPoint += TILE_SIZE;
+						xPoint = 0;					
+					}	
+				}
+
+				function convertImageToSVG(img){
+					var canvas = document.createElement("canvas");
+					var canvasSVGContext = new CanvasSVG.Deferred();
+					canvasSVGContext.wrapCanvas(canvas);
+					
+					var	ctx = canvas.getContext("2d");
+
+					canvas.width = img.width;
+					canvas.height = img.height;	
+
+					ctx.drawImage(img,0,0,canvas.width,canvas.height);
+					
+
+					return ctx.getSVG();
+				}
+
+				function uploadImageFn(e){
+					angular.element("#imageHolder").html("");				
+					var input = e.target, reader = undefined, imgObj = undefined, imageElement = undefined;	
+					try{
+						reader = new FileReader();
+						imgObj = new Image();
+						
+						reader.onloadend = function(e){
+							imgObj.src = reader.result;
+							
+							var svgImage = convertImageToSVG(imgObj);
+
+							//imageElement = angular.element(imgObj).addClass("imageParent");			
+							
+							angular.element("#imageHolder").append(svgImage).addClass("imageParent");				
+						}
+
+						reader.readAsDataURL(input.files[0]);
+						vm.imageFile = input.files[0];
+					}catch(e){
+
+					}
+				}
+
+				$scope.message = "Mosaic Problem";
+				
+			}	
+		</script>
+		<style type="text/css">
+
+			.imageChild{
+				position: absolute;
+				z-index : 2;
+				opacity: 0.2;				
+			}
+
+			.imageParent{
+				z-index : 1;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body ng-controller="myCtrl as vm" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{message}}</h3>	
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<input 	type="file" 
+			              	ng-model="vm.imageName" 
+			              	accept="image/*" 
+			              	 id="uploadImageFnFile"  />
+			              	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" id="imageHolder"></div>
+			</div>
+			
+		</div>	
+	</body>
+</html>

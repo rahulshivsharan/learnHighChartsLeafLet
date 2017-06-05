@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").directive("customList",customList);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			angular.module("myApp").controller("customCtrl",customCtrl);
+			myCtrl.$inject = ["$scope"];
+			customCtrl.$inject = ["$scope"];
+
+			function myCtrl($scope){
+				var vm = this;
+				vm.message = "Isolated Scope";
+				$scope.actorsList = ["Aadesh Shrivastava","Nikhil Nagotkar","Hemand Chiplunkar"];
+			}
+
+			function customCtrl($scope){
+				var vm = this;				
+				$scope.actorsList = ["Kistof Nichoulos","Bakalan Jimov","Arik Kinovich"];
+			}
+
+			function customList(){
+				return {
+					restrict : 'EA',
+					scope : true,
+					controller : "customCtrl",
+					template : "<ul><li ng-repeat='actor in actorsList'>{{actor}}</li></ul>",
+					link : function(scope,element,attrs,someCtrl){
+						var myarray = scope.actorsList, count = 0;
+
+						for(var i = 0; i < myarray.length; i++){
+							console.log(" Name  "+myarray[i]);
+						}
+					} 
+				}
+			}	
+		</script>
+	</head>
+	<body ng-controller="myCtrl as vm" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{vm.message}}</h3>	
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<custom-list></custom-list>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<ol>
+					<li ng-repeat="actor in actorsList">{{actor}}</li>
+				</ol>
+			</div>
+		</div>	
+	</body>
+</html>

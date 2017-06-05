@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			angular.module("myApp").directive("listCities",listCities);
+
+			myCtrl.$inject = ["$scope"]
+
+			function myCtrl($scope){
+				var vm = this;
+				vm.add = add;
+				$scope.message = "Usage of transclude";
+				vm.list = ["Delhi","Chennai","Bangloru"];
+				vm.city = "";
+
+				function add(){
+					if(vm.city !== null && vm.city !== ""){
+						vm.list.push(vm.city);	
+					}
+					
+					vm.city = "";
+				}
+			}
+
+			function listCities(){
+				return {
+					restrict : "E",
+					transclude : true,
+					scope : {},
+					template : "<div ng-transclude></div>"
+				}
+			}	
+		</script>
+	</head>
+	<body ng-controller="myCtrl as vm" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{message}}</h3>	
+			</div>
+			<div class="row">
+				<div class="col-md-5 col-md-offset-2">
+					<form ng-submit="vm.add()">
+						<input type="text" ng-model="vm.city"  class="form-control" />
+						<button type="submit" style="display:none"></button>
+					</form>
+					 <br/>
+					<list-cities>
+						<ol class="list-group">
+							<li class="list-group-item" ng-repeat="cities in vm.list">{{cities}}</li>
+						</ol>
+					</list-cities>
+				</div>
+			</div>
+		</div>	
+	</body>
+</html>

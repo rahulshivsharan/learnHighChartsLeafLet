@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>First Highcharts Practise</title>
+		<script src="../../../lib/jquery-3.0.0.js"></script>
+		<script src="../../../lib/highcharts/highcharts.js"></script>
+		<style type="text/css">
+			#container{
+				width: 550px; 
+				height: 400px;
+				margin: 0 auto;
+			}
+		</style>		
+	</head>
+	<body>
+		<div id="container"></div>
+		<script type="text/javaScript">
+			$(document).ready(main); // load main function
+
+			function main(){
+				
+				
+				var title = {
+					text : "Quarterly average temprature"
+				};
+				
+				var subtitle = {
+					text : "Soure www.worldtitle.com"
+				};
+
+				var xAxis = {
+					categories : ['Mar','Jun','Sept','Dec']
+				};
+
+				var yAxis = {
+					title : {
+						text : "Temprature (\xB0C)"
+					},plotLines : [{
+						value: 0,
+						width : 1,
+						color : 'red'
+					}]
+				};
+
+				var tooltip = {
+					valueSuffix: '\xB0C'
+				};
+
+				var legend = {
+					layout : 'vertical',
+					align : 'right',
+					verticalAlign : 'middle',
+					borderWidth : 0
+				};
+
+				var series = [
+					{
+						name : 'Tokyo',
+						data : [12,15,17,4]
+					},
+					{
+						name : 'New York',
+						data : [34,12,4,2]
+					},
+					{
+						name : 'Berlin',
+						data : [34,23,31,12]
+					},
+					{
+						name : 'London',
+						data : [23,56,1,2]
+					}
+				];
+
+				var json = {};
+
+				json.title = title;
+				json.subtitle = subtitle;
+				json.xAxis = xAxis;
+				json.yAxis = yAxis;
+				json.tooltip = tooltip;
+				json.legend = legend;
+				json.series = series;
+
+				$("#container").highcharts(json);
+
+			} // main function
+		</script>
+	</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").controller("myCtrl",myCtrl);			
+			angular.module("myApp").directive("displayActor",displayActor);							
+
+			myCtrl.$inject = ["$scope"];	
+
+			function myCtrl($scope){
+				var vm = this;			
+				$scope.message = "Directive Using Controller scope";			
+
+				vm.actorTwo = {
+					name : "Shahrukh Khan",
+					film : "Darr"
+				}
+
+				vm.actorOne = {
+					name : "Akshay Kumar",
+					film : "Khiladi"
+				}
+			}
+
+			function displayActor(){
+				var obj = {};
+				obj.template = 	"<table class='table table-bordered'>"+
+								"<tr>" +
+									"<td><b>Name</b></td>" +
+									"<td>{{actorInfo.name}}</td>" +
+								"</tr>" +
+								"<tr>" +
+									"<td><b>Film</b></td>" +
+									"<td>{{actorInfo.film}}</td>" +
+								"</tr>" +	
+								"</table>";
+				
+				obj.scope = {
+					actorInfo : "=info"
+				}				
+				
+				return obj;
+			}
+		</script>
+	</head>
+	<body ng-controller="myCtrl as vm" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{message}}</h3>	
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<display-actor info="vm.actorOne"></display-actor>
+				</div>				
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<display-actor  info="vm.actorTwo"></display-actor>
+				</div>				
+			</div>			
+		</div>			
+	</body>
+</html>

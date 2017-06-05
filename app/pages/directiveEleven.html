@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+		<style type="text/css">
+			.handle{
+				font-size: 10em;
+				color :#483D8B;
+				font-weight: bold;
+				margin : 0;
+			}
+
+			.original{
+				font-size: 2.5em;
+				color : gray;
+				font-weight: bold;
+				font-style: italic;
+				float : right;
+				padding-right: 30%;
+				margin : 0;
+			}
+		</style>
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			angular.module("myApp").directive("myContent",myContent);
+			angular.module("myApp").directive("contentHandle",contentHandle);
+			
+
+			myCtrl.$inject = ["$scope"]
+
+
+			function myCtrl($scope){
+				$scope.message = "Ng-transclude";
+				
+				$scope.list = [	{ 'lang' : 'English', 'original' : 'hello' ,'message' : 'Hello' }, 
+								{ 'lang' : 'French', 'original' : 'hello', 'message' : 'Bonjour' },
+								{ 'lang' : 'Arabic', 'original' : 'hello', 'message' : "marhabaan" },
+								{ 'lang' : 'Chinese','original' : 'hello', 'message' : 'Nǐ hǎo' },
+								{ 'lang' : 'Italian', 'original' : 'hello', 'message' : 'Ciao' },
+								{ 'lang' : 'Russian', 'original' : 'hello', 'message' : 'Zdravstvuyte'},{ 'lang' : 'Spanish', 'original' : 'hello', 'message' : 'Hola' },
+								{'lang' : 'Croatian', 'original' : 'hello', 'message' : 'zdravo'},
+								{'lang' : 'Hindi', 'original' : 'hello', 'message' : 'namaste'}
+								];
+
+				$scope.selectedOption = $scope.list[0];							
+			}	
+
+			function myContent(){
+				return {				
+					restrict : "E",
+					transclude : true,
+					scope : {},
+					template : "<div ng-transclude></div>"				
+				}
+			}
+
+			function contentHandle(){
+				return {				
+					restrict : "EA",					
+					template : "<p class='original'>{{selectedOption['original']}}</p><p class='handle'>{{selectedOption['message']}}</p>"				
+				}
+			}			
+		</script>
+	</head>
+	<body ng-controller="myCtrl" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h2>{{message}}</h2>
+				<p>Using ng-transclude property to load dynamic directive template</p>	
+			</div>
+
+			<div class="row">
+				<div class="col-md-2">
+					<select ng-options="l as l.lang for l in list | orderBy:'lang' track by l.lang"
+							ng-model="selectedOption" 
+							class="form-control"></select>
+				</div>				
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-md-9 col-md-offset-3">
+					<my-content>
+						<div content-handle></div>
+					</my-content>
+				</div>
+			</div>
+		</div>	
+	</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>First Highcharts Practise</title>		
+		<link rel="stylesheet" href="../../../lib/leaflet/leaflet.css"></link>
+		<style type="text/css">
+			#container { height: 180px; }
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+
+		
+		<script src="../../../lib/leaflet/leaflet.js"></script>
+
+		<script type="text/javaScript">
+			var myMap = L.map("container").setView({
+				center : [51.505,-0.09],
+				zoom : 13
+			});			
+		</script>
+	</body>
+</html>

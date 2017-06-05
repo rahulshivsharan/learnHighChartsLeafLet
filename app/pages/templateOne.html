@@ -1,0 +1,11 @@
+<table class="table table-bordered">
+	<caption><b>Name List</b></caption>
+	<tr>
+		<th>No.</th>
+		<th>Names</th>
+	</tr>
+	<tr ng-repeat="name in vm.names track by $index">
+		<td>{{($index + 1)}}</td>
+		<td>{{name}}</td>
+	</tr>
+</table>

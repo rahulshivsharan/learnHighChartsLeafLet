@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<title>Directive Link Function</title>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/moment.js"></script>
+		<script type="text/javascript" src="/lib/angular-moment.min.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",["angularMoment"]);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			angular.module("myApp").directive("showPresent",showPresent);
+
+			myCtrl.$inject = ["$scope"];
+			showPresent.$inject = ["$interval","moment"];
+
+			function myCtrl($scope){
+				$scope.message = "Directive Link Function";
+				$scope.format = "YYYY-MM-DD hh:mm:ss a";
+			}
+
+			function showPresent($interval,moment){
+				return { 
+					link : link
+				}
+
+				function link(scope,element,attrs){
+					var dateFormat = undefined,
+						timeout = undefined;
+
+					timeout = $interval(function(){
+						updateTime();
+					},1000);	 
+
+					scope.$watch(attrs.displayFormat,function(value){
+						dateFormat = value;
+					});
+
+					element.on("$destroy",function(){
+						$interval.cancel(timeout);
+					});
+
+					function updateTime(){
+						element[0].textContent = moment().format(dateFormat).toString();		
+					}
+				}
+			}	
+		</script>
+	</head>
+	<body ng-controller="myCtrl" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{message}}</h3>	
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-1">
+				<input type="text" ng-model="format" style="width:50%" />
+				<h1>
+					
+					<span 	class="label label-primary" 
+							show-present display-format="format"></span>					
+				</h1>
+			</div>
+		</div>	
+	</body>
+</html>

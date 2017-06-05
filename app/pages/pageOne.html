@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+	<head>
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>	
+
+		<script type="text/javaScript">
+			angular.module("myApp",[]);
+			angular.module("myApp").controller("myCtrl",myCtrl);
+			myCtrl.$inject = ["$scope"]
+
+			function myCtrl($scope){
+				$scope.message = "Hello World";
+			}	
+		</script>
+	</head>
+	<body ng-controller="myCtrl" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{message}}</h3>	
+			</div>
+		</div>	
+	</body>
+</html>
