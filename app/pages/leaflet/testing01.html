@@ -7,13 +7,19 @@
 		
 
 		<style type="text/css">
-			#container { height: 180px; }
-			#mapid { height: 180px; }
+			
+			#mapid1,#mapid2 { height: 180px;width: 700px; }
+			#mapid1{
+				height: 300px;	
+			} 
 		</style>
+			
 	</head>
 	<body>
 		
-		<div id="mapid"></div>
+		<div id="mapid1"></div>
+		<br/><br/>
+		<div id="mapid2"></div>
 		
 		<script src="../../../lib/leaflet/leaflet.js"></script>
 
@@ -21,17 +27,78 @@
 
 		<script type="text/javaScript">
 			
-			var mymap2 = L.map('mapid').setView([51.505, -0.09], 13);
+			// defining latitude and longitude foe all the
+			// map location as array values. 
+			var latLong = {};
+			latLong.thane = [19.17, 72.96];
+			latLong.london = [51.505, -0.09];
 
-			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-				maxZoom: 18,
-				attribution: 	'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			// map config			
+			var thaneMap = L.map("mapid1",{
+				center : latLong.thane,
+				zoom : 13
+			});
+
+			// map config
+			var londonMap = L.map("mapid2",{
+				center : latLong.london,
+				zoom : 13
+			});
+
+			// tile config
+			var TILE_CONFIG = (function(){
+				var config = new Object();
+
+				var MyTile = function(){
+					this.getURL = function(){
+						return 'https://api.tiles.mapbox.com/' +
+								'v4/{id}/{z}/{x}/{y}.png' +
+								'?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+					}
+
+					this.getAttribute = function(){
+						return 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 								'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-								'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-				id: 'mapbox.streets'
-			}).addTo(mymap2);
+								'Imagery © <a href="http://mapbox.com">Mapbox</a>';				
+					}
 
-					
+					this.getId = function(){
+						return 'mapbox.streets';	
+					}
+				}
+
+				return new MyTile();
+			})();
+
+									
+
+			L.tileLayer(TILE_CONFIG.getURL(),{
+				attribution : TILE_CONFIG.getAttribute(),
+				id : TILE_CONFIG.getId(),
+				maxZoom : 14
+			}).addTo(thaneMap);
+
+			L.tileLayer(TILE_CONFIG.getURL(),{
+				attribution : TILE_CONFIG.getAttribute(),
+				id : TILE_CONFIG.getId(),
+				maxZoom : 200
+			}).addTo(londonMap);		
+
+
+			// creating circle for highlighting maps
+			var circle = L.circle([19.168, 72.945],{
+				color : 'red',
+				fillColor: '#f03',
+    			fillOpacity: 0.5,
+    			radius: 500
+			}).addTo(thaneMap);
+
+			// creating marker.
+			var marker = L.marker(latLong.thane).addTo(thaneMap);
+
+			var popup_template = "<b>My Residence Address</b>" +
+								  "<br/><span style='padding-left:25%'>Lok-Everest</span>";	 
+			marker.bindPopup(popup_template);
 		</script>
 	</body>
 </html>
