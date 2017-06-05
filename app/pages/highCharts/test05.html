@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>First Highcharts Practise</title>
+		
+		<style type="text/css">
+			#container{
+				width: 550px; 
+				height: 400px;
+				margin: 0 auto;
+			}
+
+			#btnContainer{
+				padding-left:45%;
+			}
+		</style>		
+	</head>
+	<body>
+		
+
+		<div>
+			<div id="container"></div><br/>
+			<div id="btnContainer">
+				<button id="barChart">Bar Chart</button>&nbsp;
+				<button id="pieChart">Pie Chart</button>					
+			</div>
+			
+		</div>
+
+		<script src="../../../lib/jquery-3.0.0.js"></script>
+		<script src="../../../lib/highcharts/highcharts.js"></script>
+
+		<script type="text/javaScript">
+			$(document).ready(main); // load main function
+
+			function main(){
+
+				loadBarChart();
+				
+				function loadBarChart(){
+					var title = {
+						text : "Usage pattern of Internet Browsers"
+					};
+
+					var subtitle = {
+						text : "Plain"
+					};
+
+					var xAxis = {
+						categories : ['FireFox','Chrome','Opera','IE','Safari'],
+						title : {
+							text : 'Browsers'
+						}
+					};
+
+					var yAxis = {
+						min : 0,
+						title : {
+							text : 'Users in millions',
+							align : 'high'
+						}
+					};
+
+					var series = [{
+						type : 'column',
+						colorByPoint : true,
+						data : [49.9, 71.5, 6.4, 59.2,35.6],
+						showInLegend : false
+					}]; 
+					
+					var json = {};
+					json.title = title;
+					json.subtitle = subtitle;
+					json.xAxis = xAxis;
+					json.yAxis = yAxis;
+					json.series = series;
+
+
+					var mainChart = Highcharts.chart("container",json);
+				}; 
+				
+				$("#barChart").click(loadBarChart);
+				$("#pieChart").click(loadPieChart);
+				
+
+				
+
+				function loadPieChart(){
+					var chart = {
+						plotBackgroundColor: null,
+            			plotBorderWidth: null,
+            			plotShadow: false,
+            			type: 'pie'
+					};
+
+					var title = {
+            			text: 'Usage pattern of Internet Browsers'
+        			}
+
+					var plotOptions = {
+			            pie: {
+			                allowPointSelect: true,
+			                cursor: 'pointer',
+			                dataLabels: {
+			                    enabled: false
+			                },
+			                showInLegend: true
+			            }
+        			};
+
+        			var series = [{
+        				name : "Browers",
+        				data : [{
+        					name : 'FireFox',
+        					y : 49.9
+        				},{
+        					name : 'Chrome',
+        					y : 71.5
+        				},{
+        					name : 'Opera',
+        					y : 6.4
+        				},{
+        					name : 'IE',
+        					y : 59.2
+        				},{
+        					name : '35.6',
+        					y : 35.6
+        				}]
+        			}];
+
+        			var tooltip = {
+            			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        			};
+
+					var json = {};
+					json.chart = chart;
+					json.plotOptions = plotOptions;
+					json.series = series;
+					json.tooltip = tooltip;
+					json.title = title;
+
+					//mainChart.update(json1);
+					Highcharts.chart("container",json);
+
+				} // loadPieChart
+
+				
+
+			} // main function
+		</script>
+	</body>
+</html>
