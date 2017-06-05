@@ -99,6 +99,20 @@
 			var popup_template = "<b>My Residence Address</b>" +
 								  "<br/><span style='padding-left:25%'>Lok-Everest</span>";	 
 			marker.bindPopup(popup_template);
+
+
+			// popup message on every area click of map
+			var popUp = L.popup();
+
+			thaneMap.on("click",onMapClick);
+			
+			function onMapClick(e){
+				popUp.setLatLng(e.latlng)
+					  .setContent("You clicked at position "+e.latlng.toString())
+					  .openOn(thaneMap);
+			}
+
+
 		</script>
 	</body>
 </html>
