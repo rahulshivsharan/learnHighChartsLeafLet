@@ -22,31 +22,25 @@
 
 			function main(){
 				
-				var chart = {
-					plotBackgroundColor : null,
-					plotBorderWidth : null,
-					plotShadow : false,
-					type : 'pie'
-				};
-
-				var title = {
-					text : "Browser market shares, January, 2015 to May 2015"
-				}
-
-				var tooltip = {
-					pointFormat : "{series.name} : <b>{point.percentage : .1f}%</b>"
-				}
-
-				var plotOptions = {
-					pie : {
-						allowPointSelect : true,
-						
-					}
-				}
-
 				var json = {};
 
+				var chart = {
+					type : 'spline',
+					animation : false,
+					marginRIght : 10,
+					events : {
+						load : function (){
+							var series = this.series[0];
 
+							setInterval(function(){
+								var x = (new Date()).getTIme(),
+									y = Math.random();
+
+								series.addPoint([x,y],true,true);	
+							},1000);
+						}
+					}
+				}	
 
 				$("#container").highcharts(json);
 
