@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html ng-app="testApp">
+	<head>
+		<title>Just Practise</title>		
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>
+	</head>
+	<body ng-controller="demoCntrl as vm" ng-init="vm.init()">
+
+		<div class="container">
+			<div class="page-header">
+				<h3><b>UI-Router Named Routing</b></h3>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<div ui-view="stateOne"></div>	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<div ui-view="stateTwo"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Libraries -->
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>
+		<script type="text/javascript" src="/lib/angular.js"></script>	    
+	    <script type="text/javascript" src="/lib/angular-ui-router.js"></script>
+	    <script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+	    <script type="text/javaScript">
+	    		angular.module("testApp",["ui.router"]);
+	    		angular.module("testApp").config(configFn);
+	    		angular.module("testApp").controller("demoCntrl",demoCntrl);
+	    		angular.module("testApp").controller("partOneCntrl",partOneCntrl);
+	    		angular.module("testApp").controller("partTwoCntrl",partTwoCntrl);
+
+	    		
+	    		demoCntrl.$inject = ["$scope","$state"];
+	    		partOneCntrl.$inject = ["$scope","$state"];
+	    		partTwoCntrl.$inject = ["$scope","$state"];
+
+	    		configFn.$inject = ["$stateProvider"];
+
+	    		function demoCntrl($scope,$state){
+	    			console.log("Controller demoCntrl initialised")
+	    			var vm = this;
+	    			vm.init = init;
+
+	    			function init(){
+	    				console.log("init of demoCntrl");
+	    				$state.go("masterOne");
+	    				
+	    			}
+	    		}// end of demoCntrl
+
+	    		function partOneCntrl($scope,$state){
+	    			console.log("Controller partOneCntrl initialised")
+	    			var vm = this;
+	    			
+	    			vm.loadNext = loadNext;
+	    			vm.goBack = goBack;
+
+	    			
+	    			function loadNext(){
+	    				$state.go("masterTwo");
+	    			}
+
+	    			function goBack(){
+	    				$state.go("masterOne");
+	    			}
+	    		}// end of partOneCntrl
+
+	    		function partTwoCntrl($scope,$state){
+	    			console.log("Controller partTwoCntrl initialised")
+	    			var vm = this;
+	    			
+	    			vm.loadNext = loadNext;
+	    			vm.goBack = goBack;
+
+	    			
+	    			function loadNext(){
+	    				$state.go("masterTwo");
+	    			}
+
+	    			function goBack(){
+	    				$state.go("masterOne");
+	    			}
+	    		}// end of partTwoCntrl
+
+	    		function configFn($stateProvider){
+	    			$stateProvider.state("masterOne",{
+	    				views : {
+	    					"stateOne" : {
+	    						url : "/stateOne",
+	    						templateUrl : "/pages/uiRouter/template01.html",
+	    						controller : "partOneCntrl",
+	    						controllerAs : "vm"
+	    					},
+	    					"stateTwo" : {
+	    						url : "/stateTwo",
+	    						templateUrl : "/pages/uiRouter/template02.html",
+	    						controller : "partTwoCntrl",
+	    						controllerAs : "vm"
+	    					}
+	    				}
+	    			}).state("masterTwo",{
+	    				views : {
+	    					"stateOne" : {
+	    						url : "/stateOne",
+	    						templateUrl : "/pages/uiRouter/template011.html",
+	    						controller : "partOneCntrl",
+	    						controllerAs : "vm"
+	    					},
+	    					"stateTwo" : {
+	    						url : "/stateTwo",
+	    						templateUrl : "/pages/uiRouter/template022.html",
+	    						controller : "partTwoCntrl",
+	    						controllerAs : "vm"
+	    					}
+	    				}
+	    			});
+	    		} // end of configFn
+	    </script>
+	</body>
+</html>
