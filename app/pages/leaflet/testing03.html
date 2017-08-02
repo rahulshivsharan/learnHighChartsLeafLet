@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>First Highcharts Practise</title>		
+		<link rel="stylesheet" href="../../../lib/leaflet/leaflet.css"></link>
+		<style type="text/css">
+			#container { height: 580px; }
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+
+		
+		<script src="../../../lib/leaflet/leaflet.js"></script>
+
+		<script type="text/javaScript">
+
+			var latitute_longitude = [19.194785, 72.949300];
+
+			
+
+			var TILE_CONFIG = {
+				getAttribute : function(){
+					return 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' + 
+					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 
+					'Imagery © <a href="http://mapbox.com">Mapbox</a>';				
+				},
+				getURL :  function(){
+					return 'https://api.tiles.mapbox.com/' +
+							'v4/{id}/{z}/{x}/{y}.png' +
+							'?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+				},
+				getId : function(){
+					return 'mapbox.streets';
+				}
+			}
+
+			
+			
+			var ptA = L.marker([19.162571, 73.083830]).bindPopup("This is point A"),	
+				ptB = L.marker([18.967004, 73.040498]).bindPopup("This is point B"),
+				ptC = L.marker([19.073963, 72.849171]).bindPopup("This is point C");	
+
+
+			var mumbaiDestinations = L.layerGroup([ptA,ptB,ptC]);
+
+			var grayScale = L.tileLayer(TILE_CONFIG.getURL(),{
+				id : TILE_CONFIG.getId(),
+				attribution : TILE_CONFIG.getAttribute()
+			});
+
+			var streets = L.tileLayer(TILE_CONFIG.getURL(),{
+				id : TILE_CONFIG.getId(),
+				attribution : TILE_CONFIG.getAttribute()
+			});
+
+			var myMap = L.map("container",{
+				center : latitute_longitude,
+				zoom : 13,
+				layers : [streets,grayScale]
+			});	
+
+			var baseMaps = {
+				"<span style='color: gray'>Grayscale</span>" : grayScale,
+				"Streets" : streets
+			};
+
+			var overlayMaps = {
+				"Cities" : mumbaiDestinations
+			}
+
+			L.control.layers(baseMaps,overlayMaps).addTo(myMap); 
+		</script>
+	</body>
+</html>

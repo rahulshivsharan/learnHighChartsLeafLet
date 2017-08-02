@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html ng-app="dataConverter">
+	<head>
+		<title>Data Formator</title>
+		
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css">
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css">	
+		<link re="stylesheet" href="https://cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.css">	
+	</head>
+	<body ng-controller="mainCtrl as vm" ng-cloak="">
+		<div class="container">
+			<div class="page-header">
+				<h3>{{vm.heading}}</h3>	
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<input type="file" import-sheet-js="vm.excelFile" />
+				</div>
+			</div>
+		</div>
+
+		<!-- Libraries -->
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>	
+		<script type="text/javascript" src="/lib/angular.js"></script>
+		<script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/lib/sheetJS/xlsx.full.min.js"></script>
+		<script type="text/javascript" src="/lib/sheetJS/xlsx.core.min.js"></script>
+		<script type="text/javascript" src="https://cdn.rawgit.com/angular-ui/bower-ui-grid/master/ui-grid.min.js"></script>
+		
+
+		<!-- Application JS -->
+		<script type="text/javascript" src="/pages/dataImport/app.js"></script>	
+		<script type="text/javascript" src="/pages/dataImport/app.directive.js"></script>
+		<script type="text/javascript" src="/pages/dataImport/app.controller.js"></script>			
+	</body>
+</html>
