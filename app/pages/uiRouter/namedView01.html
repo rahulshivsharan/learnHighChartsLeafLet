@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="testApp">
+	<head>
+		<title>Nested Named Views</title>		
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>
+	</head>
+	<body ng-controller="demoCntrl as vm">
+
+		<div class="container">
+			<div class="page-header">
+				<h3><b>UI-Router Named Routing</b></h3>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<div ui-view="stateOne"></div>	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<div ui-view="stateTwo"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Libraries -->
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>
+		<script type="text/javascript" src="/lib/angular.js"></script>	    
+	    <script type="text/javascript" src="/lib/angular-ui-router.js"></script>
+	    <script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="/pages/uiRouter/myScript.js"></script>
+	</body>
+</html>
