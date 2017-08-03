@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<title>Nested Views</title>		
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>
+	</head>
+	<body ng-controller="templateCntrl as vm" ng-init="vm.init()">
+
+		<div class="container">
+			<div class="page-header">
+				<h3><b>Nested Template Views</b></h3>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div id="tmp01"></div>	
+				</div>
+				<div class="col-md-6">
+					<div id="tmp02"></div>	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-md-offset-2">
+					<div id="mainTmp"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Libraries -->
+		<script type="text/javascript" src="/lib/jquery-3.0.0.js"></script>
+		<script type="text/javascript" src="/lib/angular.js"></script>	    
+	    <script type="text/javascript" src="/lib/angular-ui-router.js"></script>
+	    <script type="text/javascript" src="/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+
+	    <!-- Application JS -->
+	    <script type="text/javascript" src="/templateView01/app.js"></script>	    
+	    <script type="text/javascript" src="/templateView01/controller.js"></script>
+	    <script type="text/javascript" src="/templateView01/service.js"></script>
+	</body>
+</html>
