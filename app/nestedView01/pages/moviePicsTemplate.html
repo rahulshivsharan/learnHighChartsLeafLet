@@ -1,0 +1,13 @@
+<div class="panel panel-primary" ng-init="vm.init()">
+	<div class="panel-heading">
+		<div class="panel-title">
+			<b>Movie Photos</b>	
+		</div>		
+	</div>
+	<div class="panel-body">
+		<img alt="{{vm.currentActorName}}" src="{{vm.imgUrl}}" height="100" width="100" />
+		<br/><br/>
+		<button class="btn btn-primary" ng-click="vm.loadNextMovie()">Next</button>	
+		<button class="btn btn-primary" ng-click="vm.loadPrevMovie()">Prev</button>			
+	</div>
+</div>
