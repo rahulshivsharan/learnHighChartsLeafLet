@@ -27,6 +27,6 @@ app.use(function(req, res, next){
 	next();
 });
 
-app.use(serveStatic(__dirname + "/app")).listen(3031,function(){
+app.use(serveStatic(__dirname + "/")).listen(3031,function(){
 	console.log(" server started at port "+3031);
 });

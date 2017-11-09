@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<title>Nested Views</title>		
+		<link rel="stylesheet" href="/app/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/app/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>
+	</head>
+	<body ng-controller="demoCntrl as vm" ng-cloak>
+
+		<div class="container">
+			<div class="page-header">
+				<h3><b>i18 Practise</b></h3>
+			</div>
+			<div class="row">
+				<p>
+					Change language to: <br>
+					<a href="javascript:void(0)" ng-click="vm.changeLng('en')">English</a><br>
+					<a href="javascript:void(0)" ng-click="vm.changeLng('fr')">French</a>
+				</p>
+				<div class="col-md-6"><h1>{{vm.message | i18next}}</h1></div>				
+			</div>			
+		</div>
+
+		<!-- Libraries -->
+		<script type="text/javascript" src="/app/lib/jquery-3.0.0.js"></script>
+		<script type="text/javascript" src="/node_modules/angular/angular.js"></script>
+		<script type="text/javascript" src="/node_modules/angular-sanitize/angular-sanitize.js"></script>
+		<script type="text/javascript" src="/node_modules/i18next/i18next.js"></script>
+		<script type="text/javascript" src="/node_modules/i18next-xhr-backend/i18nextXHRBackend.min.js"></script>		    	    
+	    <script type="text/javascript" src="/app/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>	    
+	    <script type="text/javascript" src="/node_modules/ng-i18next/dist/ng-i18next.js"></script>
+	    <script type="text/javascript" src="/app/i18/i18Initialise.js"></script>
+	    <script type="text/javaScript">
+	    	angular.module("myApp",["ngSanitize","jm.i18next"]);
+
+	    	angular.module('jm.i18next').config(function ($i18nextProvider) {
+				'use strict';
+			});
+
+
+	    	
+	    	angular.module("myApp").controller("demoCntrl",["$scope","$i18next","$timeout","$rootScope",demoCntrl]);
+
+	    	function demoCntrl($scope,$i18next,$timeout,$rootScope){
+	    		var vm = this;
+	    		vm.message = "Hello";
+	    		vm.changeLng = changeLng;
+
+	    		function changeLng(lng) {
+	    			console.log(" Hi !!! ");
+					$i18next.changeLanguage(lng);
+				};
+
+				$timeout(function () {
+					console.log('Force $digest!');
+					$rootScope.$apply();
+				});
+	    	} // end of demoCntrl
+
+	    	
+	    </script>
+
+	</body>
+</html>
