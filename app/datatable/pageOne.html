@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html ng-app="MyApp">
+	<head>
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css">
+		
+		<link 	rel="stylesheet" 
+			href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">	
+			
+		<link 	rel="stylesheet" 
+			href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/css/angular-datatables.css">		
+			
+		<link 	rel="stylesheet" 
+			href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/plugins/bootstrap/datatables.bootstrap.min.css">			
+	</head>
+	<body ng-controller="myCtrl as vm">
+		
+		<table datatable="ng"  dt-options="vm.dtOptions" class="row-border hover">
+		    <thead>
+			    <tr>
+			        <th>ID</th>
+			        <th>First name</th>
+			        <th>Last name</th>
+			    </tr>
+		    </thead>
+		    <tbody>
+			    <tr ng-repeat="p in vm.persons">
+			        <td>{{p.id}}</td>
+			        <td>{{p.firstName}}</td>
+			        <td>{{p.lastName}}</td>
+			    </tr>			    
+		    </tbody>
+		</table>
+		<script src="https://code.jquery.com/jquery-3.2.1.js"
+  				integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  				crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script> 
+		<script type="text/javascript" 
+				src="https://cdn.datatables.net/v/dt/dt-1.10.16/b-1.4.2/b-flash-1.4.2/b-html5-1.4.2/datatables.min.js"></script> 
+		<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/angular-datatables.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/plugins/buttons/angular-datatables.buttons.min.js"></script>
+		<script type="text/javaScript">
+			(function(){
+				'use strict';
+				angular.module("MyApp",["datatables","datatables.buttons"]);
+
+				angular.module("MyApp").controller("myCtrl",myCtrl);
+
+				myCtrl.$inject = ["$scope","DTOptionsBuilder"];
+
+				function myCtrl($scope,DTOptionsBuilder){
+					var vm = this;
+
+					vm.persons = [
+						{ "id" : 1, "firstName" : "Foo", "lastName" : "Bar" },
+						{ "id" : 123, "firstName" : "Someone", "lastName" : "Youknow" },
+						{ "id" : 987, "firstName" : "Iamout", "lastName" : "Ofinspiration" },
+						{ "id" : 187, "firstName" : "Zack", "lastName" : "The Man" },
+						{ "id" : 18, "firstName" : "Zack Snieder", "lastName" : "This" }
+					]
+
+					vm.dtOptions = DTOptionsBuilder.newOptions().withDOM("Bfrtip").withButtons(['copy','print','csv']);
+				}
+			})();
+		</script>
+	</body>
+</html>
