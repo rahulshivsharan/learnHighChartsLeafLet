@@ -1,0 +1,16 @@
+<table datatable="ng"  dt-options="dtOptions" class="table">
+	<thead>
+	    <tr>
+	        <th>ID</th>
+	        <th>First name</th>
+	        <th>Last name</th>
+	    </tr>
+	</thead>
+	<tbody>
+	    <tr ng-repeat="p in data">
+	        <td>{{p.id}}</td>
+	        <td>{{p.firstName}}</td>
+	        <td>{{p.lastName}}</td>
+	    </tr>			    
+	</tbody>
+</table>

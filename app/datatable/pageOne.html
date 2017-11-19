@@ -1,57 +1,51 @@
 <!DOCTYPE HTML>
 <html ng-app="MyApp">
 	<head>
-		<link rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css">
-		
-		<link 	rel="stylesheet" 
-			href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">	
-			
-		<link 	rel="stylesheet" 
-			href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/css/angular-datatables.css">		
-			
-		<link 	rel="stylesheet" 
-			href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/plugins/bootstrap/datatables.bootstrap.min.css">			
+		<link rel="stylesheet" href="/app/lib/Bootstrapv3.0.2/css/bootstrap.min.css">		
+		<link rel="stylesheet" href="/app/lib/DataTables/Buttons-1.4.2/css/buttons.dataTables.min.css">	
+		<link rel="stylesheet" href="/app/lib/angular-datatable/angular-datatables.min.css">					
+		<link rel="stylesheet" href="/app/lib/DataTables/DataTables-1.10.16/css/datatables.bootstrap.min.css">			
 	</head>
 	<body ng-controller="myCtrl as vm">
 		
-		<table datatable="ng"  dt-options="vm.dtOptions" class="row-border hover">
-		    <thead>
-			    <tr>
-			        <th>ID</th>
-			        <th>First name</th>
-			        <th>Last name</th>
-			    </tr>
-		    </thead>
-		    <tbody>
-			    <tr ng-repeat="p in vm.persons">
-			        <td>{{p.id}}</td>
-			        <td>{{p.firstName}}</td>
-			        <td>{{p.lastName}}</td>
-			    </tr>			    
-		    </tbody>
-		</table>
-		<script src="https://code.jquery.com/jquery-3.2.1.js"
-  				integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-  				crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script> 
-		<script type="text/javascript" 
-				src="https://cdn.datatables.net/v/dt/dt-1.10.16/b-1.4.2/b-flash-1.4.2/b-html5-1.4.2/datatables.min.js"></script> 
-		<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/angular-datatables.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/plugins/buttons/angular-datatables.buttons.min.js"></script>
+		<create-datatable data="vm.persons"></create-datatable>
+		
+		<script type="text/javascript" src="/app/lib/jquery-3.0.0.js"></script>			
+		<script type="text/javascript" src="/app/lib/angular.js"></script>
+		<script type="text/javascript" src="/app/lib/DataTables/DataTables-1.10.16/js/jquery.dataTables.js"></script>
+		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/buttons.colVis.min.js"></script>
+		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/buttons.flash.min.js"></script>
+		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/buttons.print.min.js"></script>		
+		<script type="text/javascript" src="/app/lib/angular-datatable/angular-datatables.min.js"></script>
+		<script type="text/javascript" src="/app/lib/angular-datatable/angular-datatables.buttons.min.js"></script>			
+		
+		
 		<script type="text/javaScript">
 			(function(){
 				'use strict';
 				angular.module("MyApp",["datatables","datatables.buttons"]);
-
+				angular.module("MyApp").directive("createDatatable",createDatatable);
 				angular.module("MyApp").controller("myCtrl",myCtrl);
 
-				myCtrl.$inject = ["$scope","DTOptionsBuilder"];
+				myCtrl.$inject = ["$scope","DTOptionsBuilder"];				
+
+				function createDatatable(){
+					var datatableController = datatableController;
+					return {
+						"restrict" : "EA",
+						"scope" : {
+							"data" : "="
+						},
+						"templateUrl" : "/app/datatable/tmplOne.html",
+						"controller" : ["$scope","DTOptionsBuilder",datatableController]
+					} // end of return
+
+					function datatableController($scope,DTOptionsBuilder){
+						$scope.dtOptions = DTOptionsBuilder.newOptions().withDOM("Bfrtip").withButtons(['copy','print','csv']);
+					}
+				} // end of createDatatable
 
 				function myCtrl($scope,DTOptionsBuilder){
 					var vm = this;
@@ -62,10 +56,9 @@
 						{ "id" : 987, "firstName" : "Iamout", "lastName" : "Ofinspiration" },
 						{ "id" : 187, "firstName" : "Zack", "lastName" : "The Man" },
 						{ "id" : 18, "firstName" : "Zack Snieder", "lastName" : "This" }
-					]
-
-					vm.dtOptions = DTOptionsBuilder.newOptions().withDOM("Bfrtip").withButtons(['copy','print','csv']);
-				}
+					];
+					
+				} // end of myCtrl
 			})();
 		</script>
 	</body>
