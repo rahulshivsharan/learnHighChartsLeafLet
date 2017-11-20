@@ -2,16 +2,33 @@
 <html ng-app="MyApp">
 	<head>
 		<link rel="stylesheet" href="/app/lib/Bootstrapv3.0.2/css/bootstrap.min.css">		
-		<link rel="stylesheet" href="/app/lib/DataTables/Buttons-1.4.2/css/buttons.dataTables.min.css">	
+		<link rel="stylesheet" href="/app/lib/DataTables/Buttons-1.4.2/css/buttons.dataTables.min.css">
+		<link rel="stylesheet" href="/app/lib/DataTables/Buttons-1.4.2/css/buttons.bootstrap.min.css">	
 		<link rel="stylesheet" href="/app/lib/angular-datatable/angular-datatables.min.css">					
 		<link rel="stylesheet" href="/app/lib/DataTables/DataTables-1.10.16/css/datatables.bootstrap.min.css">			
 	</head>
-	<body ng-controller="myCtrl as vm">
+	<body ng-controller="myCtrl as vm" ng-init="vm.init()">
+		<div class="container">			
+			<div class="row">
+				<div class="col-md-3">
+					<select ng-model="vm.selectedActor" 
+							ng-options="actor as actor for actor in vm.actorLists" 
+							class="form-control" 
+							ng-change="vm.loadMovies()"></select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<span us-spinner ng-if="vm.isLoaded"></span>
+					<create-datatable data="vm.movieList"></create-datatable>			
+				</div>
+			</div>
+		</div>
 		
-		<create-datatable data="vm.persons"></create-datatable>
 		
 		<script type="text/javascript" src="/app/lib/jquery-3.0.0.js"></script>			
 		<script type="text/javascript" src="/app/lib/angular.js"></script>
+		<script type="text/javascript" src="/node_modules/angular-spinner/dist/angular-spinner.min.js"></script>
 		<script type="text/javascript" src="/app/lib/DataTables/DataTables-1.10.16/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/dataTables.buttons.min.js"></script>
 		<script type="text/javascript" src="/app/lib/DataTables/Buttons-1.4.2/js/buttons.colVis.min.js"></script>
@@ -25,11 +42,41 @@
 		<script type="text/javaScript">
 			(function(){
 				'use strict';
-				angular.module("MyApp",["datatables","datatables.buttons"]);
+				angular.module("MyApp",["datatables","datatables.buttons","angularSpinner"]);
 				angular.module("MyApp").directive("createDatatable",createDatatable);
 				angular.module("MyApp").controller("myCtrl",myCtrl);
+				angular.module("MyApp").factory("movieService",movieService);
 
-				myCtrl.$inject = ["$scope","DTOptionsBuilder"];				
+				movieService.$inject = ["$http","$q"];
+				myCtrl.$inject = ["$scope","DTOptionsBuilder","movieService"];				
+				
+
+				function movieService($http,$q){
+					var obj = {};
+					obj.getMovies = getMovies;
+					return obj;
+
+					function getMovies(actorName){
+						var deferred = $q.defer();
+						var BLANK_SPACE = " ", 
+							PLUS_SIGN = "+", 
+							success = success,
+							error = error;
+						actorName = actorName.replace(BLANK_SPACE,PLUS_SIGN);
+						
+						var url = "https://theimdbapi.org/api/find/person?name="+actorName;
+						$http.get(url).then(success,error);
+						return deferred.promise;
+
+						function success(response){
+							deferred.resolve(response);
+						}// end of success
+
+						function error(response){
+							deferred.reject(response);
+						} // end of error
+					} // end of getMovies
+				} // end of movieService
 
 				function createDatatable(){
 					var datatableController = datatableController;
@@ -47,17 +94,39 @@
 					}
 				} // end of createDatatable
 
-				function myCtrl($scope,DTOptionsBuilder){
+				function myCtrl($scope,DTOptionsBuilder,movieService){
 					var vm = this;
+					vm.init = init;
+					vm.selectedActor = "Jim Carrey";
+					vm.actorLists = ["Jim Carrey","Arnold Schwarzenegger","Javier Bardem","Tom Cruise","Chris Pine","Antonio Banderas"];
+					vm.loadMovies = loadMovies;
+					var getMoviesForActor = getMoviesForActor;
+					var movieDB = {};
+					vm.movieList = [];
+					vm.isLoaded = true;
 
-					vm.persons = [
-						{ "id" : 1, "firstName" : "Foo", "lastName" : "Bar" },
-						{ "id" : 123, "firstName" : "Someone", "lastName" : "Youknow" },
-						{ "id" : 987, "firstName" : "Iamout", "lastName" : "Ofinspiration" },
-						{ "id" : 187, "firstName" : "Zack", "lastName" : "The Man" },
-						{ "id" : 18, "firstName" : "Zack Snieder", "lastName" : "This" }
-					];
+					function getMoviesForActor(){
+						vm.isLoaded = true;
+						movieService.getMovies(vm.selectedActor).then(function(res){							
+							movieDB[vm.selectedActor] = res.data[0]["filmography"]["actor"];
+							vm.movieList = movieDB[vm.selectedActor];	
+							vm.isLoaded = false;							
+						},function(res){
+							console.log(res);
+						});
+					}
+
+					function loadMovies(){
+						if(!(vm.selectedActor in movieDB)){
+							getMoviesForActor();	
+						}else{
+							vm.movieList = movieDB[vm.selectedActor];					
+						}								
+					} // end of loadMovies
 					
+					function init(){
+						getMoviesForActor();						
+					}
 				} // end of myCtrl
 			})();
 		</script>

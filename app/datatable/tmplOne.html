@@ -1,16 +1,18 @@
-<table datatable="ng"  dt-options="dtOptions" class="table">
+<table datatable="ng"  dt-options="dtOptions" class="table table-striped">
 	<thead>
 	    <tr>
-	        <th>ID</th>
-	        <th>First name</th>
-	        <th>Last name</th>
+	        <th>Year</th>
+	        <th>Type</th>
+	        <th>Title</th>
 	    </tr>
 	</thead>
 	<tbody>
-	    <tr ng-repeat="p in data">
-	        <td>{{p.id}}</td>
-	        <td>{{p.firstName}}</td>
-	        <td>{{p.lastName}}</td>
+	    <tr ng-repeat="movie in data">
+	        <td>{{movie.year}}</td>
+	        <td>{{movie.type}}</td>
+	        <td>
+	        	<a href="{{movie.url}}">{{movie.title}}</a>
+	        </td>
 	    </tr>			    
 	</tbody>
 </table>
