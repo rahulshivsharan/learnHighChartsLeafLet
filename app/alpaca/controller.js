@@ -9,8 +9,6 @@
 		var vm = this;
 		$scope.init = init;
 
-
-
 		function init(){
 			$(function(){
 				$scope.$alpacaForm = $("#alpcaDemo").alpaca({
