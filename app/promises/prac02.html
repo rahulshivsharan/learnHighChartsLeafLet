@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<title>Nested Views</title>		
+		<link rel="stylesheet" href="/app/lib/Bootstrapv3.0.2/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="/app/lib/Bootstrapv3.0.2/css/bootstrap-theme.css"></link>
+		<style type="text/css">
+			.page-header,.page-header h2{
+				background-color: #002db3;
+				color : white;
+				margin : 0;				
+			}
+
+			.page-header{
+				-webkit-box-shadow: 0 8px 6px -6px black;
+       			moz-box-shadow: 0 8px 6px -6px black;
+            	box-shadow: 0 8px 50px -6px black;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page-header">
+			<h2>Promises</h2>
+		</div>
+		<div class="container" ng-controller="myCtrl as vm" ng-init="vm.init()">
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-12">
+					<ul>
+						<li ng-repeat="o in vm.myList">
+							<h3 ng-cloak>{{o}}</h3>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- Libraries -->
+		<script type="text/javascript" src="/app/lib/jquery-3.0.0.js"></script>
+		<script type="text/javascript" src="/app/lib/angular.js"></script>	    
+	    <script type="text/javascript" src="/app/lib/angular-ui-router.js"></script>
+	    <script type="text/javascript" src="/app/lib/Bootstrapv3.0.2/js/bootstrap.min.js"></script>
+
+	    <script type="text/javaScript">
+	    	angular.module("myApp",[]);
+	    	angular.module("myApp").controller("myCtrl",myCtrl);
+	    	angular.module("myApp").factory("demoService",demoService);
+	    	
+	    	demoService.$inject = ["$q","$timeout"];
+	    	myCtrl.$inject = ["$scope","demoService"];
+
+	    	function myCtrl($scope,demoService){
+	    		var vm = this;
+	    		vm.init = init;
+
+	    		vm.myList = [];
+
+	    		function init(){
+	    			demoService.get3000().then(function(obj){
+	    				vm.myList.push(obj.name);
+	    				console.log(obj.name);	    				
+	    				return demoService.get2000();
+	    			}).then(function(obj){
+	    				vm.myList.push(obj.name);
+	    				console.log(obj.name);
+	    				return demoService.get1000();
+	    			}).then(function(obj){
+	    				vm.myList.push(obj.name);
+	    				console.log(obj.name);
+	    			});	
+	    		} // end of init
+	    	} // end of myCtrl	
+
+	    	function demoService($q,$timeout){
+	    		var obj = {};
+	    		obj.get1000 = get1000;
+	    		obj.get2000 = get2000;
+	    		obj.get3000 = get3000;
+
+	    		return obj;
+
+	    		function get1000(){
+	    			var deferred = $q.defer();
+	    			var INTERVAL = 1000;
+	    			$timeout(function() {	    				
+	    				deferred.resolve({ "name" : INTERVAL });
+	    			}, INTERVAL);
+	    			return deferred.promise;
+	    		}
+
+	    		function get2000(){
+	    			var deferred = $q.defer();
+	    			var INTERVAL = 2000;
+	    			$timeout(function() {
+	    				deferred.resolve({ "name" : INTERVAL });
+	    			}, INTERVAL);
+	    			return deferred.promise;
+	    		}
+
+	    		function get3000(){
+	    			var deferred = $q.defer();
+	    			var INTERVAL = 3000;
+	    			$timeout(function() {
+	    				deferred.resolve({ "name" : INTERVAL });
+	    			}, INTERVAL);
+	    			return deferred.promise;
+	    		}
+
+	    	} // end of demoService
+	    </script>
+	</body>
+</html>	
